@@ -7,7 +7,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2017, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) 1998 - 2018, Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -146,6 +146,14 @@
    We prefix with CURL to prevent name collisions. */
 #define CURLMAX(x,y) ((x)>(y)?(x):(y))
 #define CURLMIN(x,y) ((x)<(y)?(x):(y))
+
+#if (SIZEOF_CURL_OFF_T == 4)
+#  define CURL_OFF_T_MAX CURL_OFF_T_C(0x7FFFFFFF)
+#else
+   /* assume CURL_SIZEOF_CURL_OFF_T == 8 */
+#  define CURL_OFF_T_MAX CURL_OFF_T_C(0x7FFFFFFFFFFFFFFF)
+#endif
+#define CURL_OFF_T_MIN (-CURL_OFF_T_MAX - CURL_OFF_T_C(1))
 
 #ifdef HAVE_GSSAPI
 /* Types needed for krb5-ftp connections */
